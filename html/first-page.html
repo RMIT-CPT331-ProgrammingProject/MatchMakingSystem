@@ -19,7 +19,13 @@
 		<link rel="stylesheet" href="./bootstrap-4.3.1-dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="./css/common.css">
 		<script src="./bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
-		
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>
+		<script>
+		jQuery(document).ready(function(){
+			$(".left_nav").height($(document).height()-50);
+			$(".footer").css("top",$(document).height()-30);
+		});
+		</script>
 	</head>
 	<body>
 		<!--WAI-ARIA landmark roles for accessibility with screen readers-->

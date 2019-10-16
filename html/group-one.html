@@ -15,66 +15,86 @@
 		<!-- HTML5 Shiv - javascript code to help correctly display styles -->
 		<!--[if lt IE 9]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
+		
+		<!-- Styles and JavaScript -->
+		<link rel="stylesheet" href="./bootstrap-4.3.1-dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="./css/common.css">
+		<script src="./bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>
+		<script>
+		jQuery(document).ready(function(){
+			$(".left_nav").height($(document).height()-50);
+			$(".footer").css("top",$(document).height()-30);
+		});
+		</script>
 	</head>
 	<body>
 		<!--WAI-ARIA landmark roles for accessibility with screen readers-->
-		<header role="banner">
+		<header role="banner" class="left_nav">
 			<!-- website logo image that is linked to Home page; and website title -->
 			<!-- Main site navigation menu -->
 			<nav role="navigation">
-				<div><img src="images/person.png" alt="Person" />Tom<span>Course Coordinator</span></div>
-				<a href="index.html" >Dashboard</a>
-				<a href="add-cohort.html" >Add Cohort</a>
-				<div><a href="settings.html" ><img src="images/settings.png" alt="settings" />Settings</a></div>
+				<div><img src="./imgs/profile_blank.png" alt="Person" class="profile_img" />
+					<br><b>Tom</b><br><span class="profile_role">Course Coordinator</span>
+				</div>
+				<div class="dash_img"><img src="./imgs/dashboard.png" alt="Dashboard" /><br> 
+					<a href="index.html" >Dashboard</a>
+				</div>
+				<div class="add_cohort"><img src="./imgs/add_cohort.jpg" alt="Add cohort" /><br> 
+					<a href="add-cohort.html" >Add Cohort</a>
+				</div>
+				<div class="settings">
+					<a href="settings.html" ><img src="./imgs/settings.png" alt="settings" />Settings</a>
+				</div>
 			</nav>
 		</header>
 		<!-- Main content, Secondary page links, and Background circle shape -->
-		<main>
+		<main class="mh-100 d-inline-block col body">
 			<!-- Webpage's main text -->
-			<article class="Top-page-header" role="article">
+			<article role="article" class="content_header group_view">
 				<h1><strong>GroupStack</strong></h1>
 				<h3>GROUP ONE</h3>
 				<h4>Student Cohorts - CPT111 Programming - Group One</h4>
-				<div><a href="logout.html" >Logout</a></div>
-				<div><a href="edit-team.html" >EDIT TEAM</a></div>
+				<div class="logout"><a href="logout.html" >Logout</a></div>
+				<div class="h_add_chrt"><a href="edit-team.html" >EDIT TEAM</a></div>
 			</article>
-			<article class="group" role="article">
+			<article role="article" class="content_body group_view">
 				<!-- Groups -->
-				<div>Mentor</div>
-				<div>
-					<img src="images/mentor-image.jpeg" alt="Mentor image" />
-				<div>Brad Smith</div>
-				<div>Mentor</div>
-				<div>email@emailaddress.com</div>
-				<div>0000 000 000</div>
+				<div class="group_title">Mentor</div>
+				<div class="block">
+					<img src="imgs/gtitle_img.png" alt="Mentor image" />
+					<div class="name">Brad Smith</div>
+					<div class="position">Mentor</div>
+					<div class="desc">email@emailaddress.com</div>
+					<div class="desc">0000 000 000</div>
 				</div>
-				<div>Students</div>
-				<span>
-					<img src="images/student-image.jpeg" alt="Student image" />
-					<div>Brad Smith</div>
-					<div>Student</div>
-					<div>email@emailaddress.com</div>
-					<div>0000 000 000</div>
-				</span>
-				<span>
-					<img src="images/student-image.jpeg" alt="Student image" />
-					<div>Kira Black</div>
-					<div>Student</div>
-					<div>email@emailaddress.com</div>
-					<div>0000 000 000</div>
-				</span>
-				<span>
-					<img src="images/student-image.jpeg" alt="Student image" />
-					<div>Tim Tiny</div>
-					<div>Student</div>
-					<div>email@emailaddress.com</div>
-					<div>0000 000 000</div>
-				</span>
+				<div class="group_title">Students</div>
+				<div class="block">
+					<img src="imgs/gtitle_img.png" alt="Student image" />
+					<div class="name">Brad Smith</div>
+					<div class="position">Mentor</div>
+					<div class="desc">email@emailaddress.com</div>
+					<div class="desc">0000 000 000</div>
+				</div>
+				<div class="block">
+					<img src="imgs/gtitle_img.png" alt="Student image" />
+					<div class="name">Brad Smith</div>
+					<div class="position">Mentor</div>
+					<div class="desc">email@emailaddress.com</div>
+					<div class="desc">0000 000 000</div>
+				</div>
+				<div class="block">
+					<img src="imgs/gtitle_img.png" alt="Student image" />
+					<div class="name">Brad Smith</div>
+					<div class="position">Mentor</div>
+					<div class="desc">email@emailaddress.com</div>
+					<div class="desc">0000 000 000</div>
+				</div>
 			</article>
 			<!-- Background circle shape -->
 			<div id="circle"></div>
 		</main>
-		<footer role="contentinfo"> <!-- Copyright information and contact link --> Copyright &copy; 2019 <a
+		<footer role="contentinfo" class="footer"> <!-- Copyright information and contact link --> Copyright &copy; 2019 <a
 		href="mailto:s3514128@student.rmit.edu.au">Contact</a> <!-- This website has been created as part of an
 		assignment in an approved course of study for RMIT University and contains copyright material not created by the
 		author. All copyright material used remains copyright of the respective owners and has been used here pursuant to
