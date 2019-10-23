@@ -1,0 +1,70 @@
+<!-- STUDENT EDIT -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Webpage title -->
+		<title>GroupStack</title>
+		<!-- Meta tags for character encoding, webpage description, search engine keywords, author and device
+		screen compatibility-->
+		<meta charset="UTF-8">
+		<meta name="description" content="Matchmaking system for University group projects">
+		<meta name="keywords" content="matchmaking, group, project, student, students, mentor, mentors">
+		<meta name="author" content="fab5" >
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Styles and JavaScript --> 
+		<link rel="stylesheet" href="./bootstrap-4.3.1-dist/css/bootstrap.min.css"> 
+		<link rel="stylesheet" href="./css/common.css"> 
+		<script src="./bootstrap-4.3.1-dist/js/bootstrap.min.js"></script> 
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script> 
+		<script> jQuery(document).ready(function(){ $(".left_nav").height($(document).height()-50); $(".footer").css("top",$(document).height()-30); }); </script> 
+		<!-- HTML5 Shiv - javascript code to help correctly display styles --> 
+		<!--[if lt IE 9]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> <![endif]--> 
+	</head>
+	<body>
+		<!--WAI-ARIA landmark roles for accessibility with screen readers-->
+		<header role="banner">
+			<!-- website logo image that is linked to Home page; and website title -->
+			<!-- Main site navigation menu -->
+			<nav role="navigation">
+				<div><img src="./imgs/profile_blank.png" alt="Person" class="profile_img" />
+				<br><b>Tom</b><br><span class="profile_role">Course Coordinator</span> </div> 
+				<div class="dash_img"><img src="./imgs/dashboard.png" alt="Dashboard" /><br> <a href="index.html" >Dashboard</a> </div> 
+				<div class="add_cohort"><img src="./imgs/add_cohort.jpg" alt="Add cohort" /><br> <a href="add-cohort.html" >Add Cohort</a> </div> 
+				<a href="connections.html" >Connections</a> 
+				<div class="settings"> <a href="settings.html" ><img src="./imgs/settings.png" alt="settings" />Settings</a> </div>
+			</nav>
+		</header>
+		<!-- Main content, Secondary page links, and Background circle shape -->
+		<main>
+			<!-- Webpage's main text -->
+			<article class="Top-page-header" role="article">
+				<h1><strong>GroupStack</strong></h1>
+				<h3>BRAD SMITH</h3>
+				<!-- Breadcrumb Navigation -->
+				<div>
+					<span><a href="student-cohorts.html" >Student Cohorts</a>&#9679; </span>
+					<span><a href="cpt111-programming.html" >CPT111 Programming</a>&#9679; </span>
+					<span><a href="group-one.html" >Group One</a>&#9679; </span>
+					Brad Smith
+				</div>
+				<div><a href="logout.html" >Logout</a></div>
+				<div><a href="edit-student.html" >EDIT</a></div>
+			</article>
+			<article class="group" role="article">
+				<!-- Individual student -->
+				<img src="images/student-image.jpeg" alt="Student image" />
+				<div>Brad Smith</div>
+				<div>Student</div>
+				<div>email@emailaddress.com</div>
+				<div>0000 000 000</div>
+				<div>Group 1 | Web Project</div>
+			</article>
+		</main>
+		<footer role="contentinfo"> <!-- Copyright information and contact link --> Copyright &copy; 2019 <a
+		href="mailto:s3514128@student.rmit.edu.au">Contact</a> <!-- This website has been created as part of an
+		assignment in an approved course of study for RMIT University and contains copyright material not created by the
+		author. All copyright material used remains copyright of the respective owners and has been used here pursuant to
+		Section 40 of the Copyright Act 1968 (Commonwealth of Australia). No part of this work may be reproduced without
+		consent of the original copyright owners. See code comments for references. --></footer>
+	</body>
+</html>
