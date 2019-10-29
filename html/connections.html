@@ -25,35 +25,59 @@
 				<div><img src="./imgs/profile_blank.png" alt="Person" class="profile_img" /><br><b>Tom</b><br><span class="profile_role">Course Coordinator</span> </div> 
 				<div class="dash_img"><img src="./imgs/dashboard.png" alt="Dashboard" /><br> <a href="index.html" >Dashboard</a> </div> 
 				<div class="add_cohort"><img src="./imgs/add_cohort.jpg" alt="Add cohort" /><br> <a href="add-cohort.html" >Add Cohort</a> </div> 
-				<a href="connections.html" >Connections</a> 
+				<div class="connections"><img src="./imgs/connections.png" alt="Add cohort" /><br> <a href="connections.html" >Connections</a>  </div> 
 				<div class="settings"> <a href="settings.html" ><img src="./imgs/settings.png" alt="settings" />Settings</a> </div>
 			</nav>
 		</header> 
 		<!-- Main content, Secondary page links, and Background circle shape --> 
-		<main class="body"> 
+		<main class="mh-100 d-inline-block col body"> 
 			<!-- Webpage's main text --> 
 			<article role="article" class="content_header"> 
 				<h1><strong>GroupStack</strong></h1> 
 				<h3>CONNECTIONS</h3> 
 				<div class="logout"><a href="logout.html" >Logout</a></div>
 			</article> 
+			
+			<!-- Background circle shape --> 
+			<div id="circle"></div>
+			
 			<article role="article" class="content_body">
 				<!-- Table for Pending Approval --> 
 				<table> 
-					<tr> <!-- Table Heading --> <th>Pending Approval</th> </tr> 
-					<tr> <!-- Table Data --> <td></td> <!-- Approve button --> <td><a href="" ><img src="images/tick.png" alt="approve" /></a></td> <!-- Disapprove button --> <td><a href="" ><img src="images/cross.png" alt="disapprove" /></a></td> </tr> <!-- Table for Mentors --> 
+					<tr> <!-- Table Heading --> <th colspan="3">Pending Approval</th> </tr> 
+					<tr class="table_content">
+						<td class="first">Nate Smith wants to be a mentor</td> 
+						<td><a href="" ><img src="./imgs/approve.jpg" alt="approve" class="con_approve" /></a></td> 
+						<td><a href="" ><img src="./imgs/decline.jpg" alt="disapprove" class="con_decline" /></a></td> 
+					</tr>
 				</table> 
+				<!-- Table for Mentors --> 
 				<table> 
-					<tr> <!-- Table Heading --> <th>Mentors</th> </tr> 
-					<tr> <!-- Table Data --> <td></td> <!-- Mentor view button --> <td><a href="" ><img src="images/view.png" alt="view" /></a></td> <!-- Mentor edit button --> <td><a href="" ><img src="images/pencil.png" alt="edit" /></a></td> <!-- Mentor delete button --> <td><a href="" ><img src="images/bin.png" alt="delete" /></a></td> </tr> 
+					<tr> <!-- Table Heading --> <th colspan="4">Mentors</th> </tr> 
+					<tr class="table_content"> 
+						<td class="first">Michael Gradv</td> 
+						<td><a href="" ><img src="./imgs/view.jpg" alt="view" class="con_view" /></a></td> 
+						<td><a href="" ><img src="./imgs/edit.jpg" alt="edit" class="con_edit"/></a></td>
+						<td><a href="" ><img src="./imgs/remove.jpg" alt="delete" class="con_remove" /></a></td> 
+					</tr> 
+					<tr class="table_content"> 
+						<td class="first">John Bowden</td> 
+						<td><a href="" ><img src="./imgs/view.jpg" alt="view" class="con_eview" /></a></td> 
+						<td><a href="" ><img src="./imgs/edit.jpg" alt="edit" class="con_edit" /></a></td>
+						<td><a href="" ><img src="./imgs/remove.jpg" alt="delete" class="con_remove" /></a></td> 
+					</tr> 
 				</table> 
 				<!-- Table for Students --> 
 				<table> 
-					<tr> <!-- Table Heading --> <th>Students</th> </tr>
-					<tr><!-- Table Data --> <td></td> <!-- Student view button --> <td><a href="" ><img src="images/view.png" alt="view" /></a></td> <!-- Student edit button --> <td><a href="" ><img src="images/pencil.png" alt="edit" /></a></td> <!-- Student delete button --> <td><a href="" ><img src="images/bin.png" alt="delete" /></a></td> </tr> 
+					<tr> <!-- Table Heading --> <th colspan="4">Students</th> </tr>
+					<tr class="table_content">
+						<td class="first"></td> 
+						<td><a href="" ><img src="./imgs/view.jpg" alt="view" class="con_view" /></a></td> 
+						<td><a href="" ><img src="./imgs/edit.jpg" alt="edit" class="con_edit" /></a></td> 
+						<td><a href="" ><img src="./imgs/remove.jpg" alt="delete" class="con_remove" /></a></td> 
+					</tr> 
 				</table> 
-			</article> 
-			<!-- Background circle shape --> <div id="circle"></div>
+			</article> 			
 		</main>
 		<footer role="contentinfo" class="footer"> 
 			<!-- Copyright information and contact link --> 

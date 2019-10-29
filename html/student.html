@@ -22,7 +22,7 @@
 	</head>
 	<body>
 		<!--WAI-ARIA landmark roles for accessibility with screen readers-->
-		<header role="banner">
+		<header role="banner" class="left_nav">
 			<!-- website logo image that is linked to Home page; and website title -->
 			<!-- Main site navigation menu -->
 			<nav role="navigation">
@@ -30,37 +30,39 @@
 				<br><b>Tom</b><br><span class="profile_role">Course Coordinator</span> </div> 
 				<div class="dash_img"><img src="./imgs/dashboard.png" alt="Dashboard" /><br> <a href="index.html" >Dashboard</a> </div> 
 				<div class="add_cohort"><img src="./imgs/add_cohort.jpg" alt="Add cohort" /><br> <a href="add-cohort.html" >Add Cohort</a> </div> 
-				<a href="connections.html" >Connections</a> 
+				<div class="connections"><img src="./imgs/connections.png" alt="Add cohort" /><br> <a href="connections.html" >Connections</a>  </div>  
 				<div class="settings"> <a href="settings.html" ><img src="./imgs/settings.png" alt="settings" />Settings</a> </div>
 			</nav>
 		</header>
 		<!-- Main content, Secondary page links, and Background circle shape -->
-		<main>
+		<main class="mh-100 d-inline-block col body">
 			<!-- Webpage's main text -->
-			<article class="Top-page-header" role="article">
+			<article class="content_header" role="article">
 				<h1><strong>GroupStack</strong></h1>
 				<h3>BRAD SMITH</h3>
 				<!-- Breadcrumb Navigation -->
-				<div>
+				<div class="breadcrumbs">
 					<span><a href="student-cohorts.html" >Student Cohorts</a>&#9679; </span>
 					<span><a href="cpt111-programming.html" >CPT111 Programming</a>&#9679; </span>
 					<span><a href="group-one.html" >Group One</a>&#9679; </span>
 					Brad Smith
 				</div>
-				<div><a href="logout.html" >Logout</a></div>
-				<div><a href="edit-student.html" >EDIT</a></div>
+				<div class="logout"><a href="logout.html" >Logout</a></div>
+				<div class="h_add_chrt"><a href="edit-student.html" >EDIT</a></div>
 			</article>
-			<article class="group" role="article">
+			<article class="content_body" role="article">
 				<!-- Individual student -->
-				<img src="images/student-image.jpeg" alt="Student image" />
-				<div>Brad Smith</div>
-				<div>Student</div>
-				<div>email@emailaddress.com</div>
-				<div>0000 000 000</div>
-				<div>Group 1 | Web Project</div>
+				<div class="block">
+					<img src="imgs/gtitle_img.png" alt="Student image" />
+					<div class="group_title">Brad Smith</div>
+					<div class="position">Student</div>
+					<div class="desc">email@emailaddress.com</div>
+					<div class="desc">0000 000 000</div>
+					<div class="action"><a href="#">Group 1</a> | <a href="#">Web Project</a></div>
+				</div>
 			</article>
 		</main>
-		<footer role="contentinfo"> <!-- Copyright information and contact link --> Copyright &copy; 2019 <a
+		<footer role="contentinfo" class="footer"> <!-- Copyright information and contact link --> Copyright &copy; 2019 <a
 		href="mailto:s3514128@student.rmit.edu.au">Contact</a> <!-- This website has been created as part of an
 		assignment in an approved course of study for RMIT University and contains copyright material not created by the
 		author. All copyright material used remains copyright of the respective owners and has been used here pursuant to

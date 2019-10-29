@@ -28,6 +28,25 @@ button {
 	border:1px solid #ffc439a8;
 	border-radius: 5px;
 }
+th {
+	background: #5a6978;
+	color: #FFFFFF;
+	border: 1px solid #5a6978;
+	padding-left: 20px;
+	font-weight: 500;
+}
+table {
+	margin-bottom: 30px;
+	width: 400px;
+	background: #FFFFFF;
+}
+table .first {
+	width: 350px;
+	padding-left: 20px;
+}
+td {
+	padding-right: 10px;
+}
 .left_nav {
 	min-width: 195px;
 	height: 100%;
@@ -54,10 +73,16 @@ button {
 	width: 30px;
 	margin-bottom: 10px;
 }
-.dash_img a, .add_cohort a {
+.dash_img a, .add_cohort a, .connections a {
 	color: #000000;
 	text-decoration: none;
 	text-transform: uppercase;
+}
+.connections {
+	margin-top: 40px;
+}
+.connections img {
+	width: 70px;
 }
 .add_cohort {
 	margin-top: 30px;
@@ -116,7 +141,7 @@ button {
 .content_body.cohort {
 	padding: 20px 50px;	
 }
-.content_body .circle {
+#circle {
 	border-radius: 50%;
 	width: 500px;
 	height: 500px; 
@@ -223,6 +248,10 @@ button {
 .content_body.group_view {
 	padding-top: 0px;
 }
+.content_body .table_content {
+	background: #FFFFFF;
+	border: 1px solid #c8d2de;
+}
 .group_view img {
 	width: 35%;
 	margin-bottom: 10px;
@@ -236,6 +265,9 @@ button {
 }
 .group_view .desc {
 	color: #969faa;
+}
+.breadcrumbs span {
+	margin-right: 5px;
 }
 .footer {
 	position: absolute;

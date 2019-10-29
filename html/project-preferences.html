@@ -28,60 +28,96 @@
 				<br><b>Tom</b><br><span class="profile_role">Course Coordinator</span> </div> 
 				<div class="dash_img"><img src="./imgs/dashboard.png" alt="Dashboard" /><br> <a href="index.html" >Dashboard</a> </div> 
 				<div class="add_cohort"><img src="./imgs/add_cohort.jpg" alt="Add cohort" /><br> <a href="add-cohort.html" >Add Cohort</a> </div> 
-				<a href="connections.html" >Connections</a> 
+				<div class="connections"><img src="./imgs/connections.png" alt="Add cohort" /><br> <a href="connections.html" >Connections</a>  </div> 
 				<div class="settings"> <a href="settings.html" ><img src="./imgs/settings.png" alt="settings" />Settings</a> </div>
 		</header> 
 		<!-- Main content, Secondary page links, and Background circle shape --> 
-		<main> 
+		<main class="mh-100 d-inline-block col body"> 
 			<!-- Webpage's main text --> 
-			<article class="Top-page-header" role="article"> 
+			<article class="content_header" role="article"> 
 				<h1><strong>GroupStack</strong></h1> 
 				<h3>Project Preferences</h3> 
 				<h4>Make Selection</h4> 
-				<div><a href="logout.html" >Logout</a></div>
+				<div class="logout"><a href="logout.html" >Logout</a></div>
 			</article> 
+			
+			<!-- Background circle shape --> 
+			<div id="circle"></div>
+			
 			<article role="article" class="content_body">
 				<form id=“” action=“server.php” method=“post”>
 					<!-- Table for Project Details --> 
-					<table> 
-						<tr> <!-- Table Heading --> <th>#</th><th> Project Details </th> </tr> 
-						<tr> <!-- Project Number --> <td>1</td> <!-- Project Name --> <td>Website - Brewery</td> 
-						<!-- Project view button --> <td><a href="" ><img src="images/view.png" alt="view" /></a></td> </tr> 
-						<tr> <!-- Project Number --> <td>2</td> <!-- Project Name --> <td>Mobile App - Coffee Shop</td> 
-						<!-- Project view button --> <td><a href="" ><img src="images/view.png" alt="view" /></a></td> </tr> <tr> <!-- Project Number --> <td>3</td> <!-- Project Name --> <td>Data Dashboard</td> 
-						<!-- Project view button --> <td><a href="" ><img src="images/view.png" alt="view" /></a></td> </tr> <tr> <!-- Project Number --> <td>4</td> <!-- Project Name --> <td>Website - Clothing Store</td> 
-						<!-- Project view button --> <td><a href="" ><img src="images/view.png" alt="view" /></a></td> </tr> <tr> <!-- Project Number --> <td>5</td> <!-- Project Name --> <td>Mobile App - Cafe Menu</td> 
-						<!-- Project view button --> <td><a href="" ><img src="images/view.png" alt="view" /></a></td> </tr> </table> 
-					<!-- User Preferences --> 
-					<table> 
-						<tr> <!-- Table Heading --> <th>My Preferences</th> </tr>
-						<tr><!-- Table Data --> <td>First Preference</td> 
-						<!-- First preference selection--> 
-						<td>
-							<select name=“website”>
-								<option value=“brewery”>Brewery</option>
-								<option value=“clothing-store”>Clothing Store</option>
-							</select></td></tr> 
-						<tr><!-- Table Data --> <td>Second Preference</td> 
-						<!-- Second preference selection--> 
-						<td>
-							<select name=“app”>
-								<option value=“coffee-shop”>Coffee Shop</option>
-								<option value=“cafe-menu”>Cafe Menu</option>
-							</select></td></tr> 
-						<tr><!-- Table Data --> <td>Third Preference</td> 
-						<!-- Third preference selection--> 
-						<td>
-							<select name=“dashboard”>
-								<option value=“data-dashboard”>Data Dashboard</option>
-							</select></td></tr>
+					<table class="table_content"> 
+						<tr> 
+							<th>#</th>
+							<th colspan="2">Project Details </th> 
+						</tr> 
+						<tr> 
+							<td>1</td>
+							<td>Website - Brewery</td> 
+							<td><a href="" ><img src="./imgs/view.jpg" alt="view" /></a></td> 
+						</tr> 
+						<tr>
+							<td>2</td>
+							<td>Mobile App - Coffee Shop</td> 
+							<td><a href="" ><img src="./imgs/view.jpg" alt="view" /></a></td> 
+						</tr> 
+						<tr> 
+							<td>3</td>
+							<td>Data Dashboard</td> 
+							<td><a href="" ><img src="./imgs/view.jpg" alt="view" /></a></td> 
+						</tr> 
+						<tr> 
+							<td>4</td> 
+							<td>Website - Clothing Store</td> 
+							<td><a href="" ><img src="./imgs/view.jpg" alt="view" /></a></td> 
+						</tr> 
+						<tr> 
+							<td>5</td>
+							<td>Mobile App - Cafe Menu</td> 
+							<td><a href="" ><img src="./imgs/view.jpg" alt="view" /></a></td> 
+						</tr> 
 					</table> 
-					<input type='submit' id='submitProjectPreferences' value='SUBMIT'>
+					
+					<!-- User Preferences --> 
+					<table class="table_content"> 
+						<tr> <!-- Table Heading --> <th colspan="2">My Preferences</th> </tr>
+						<tr>
+							<td>First Preference</td> 
+							<!-- First preference selection--> 
+							<td>
+								<select name=“website”>
+									<option value=“brewery”>Brewery</option>
+									<option value=“clothing-store”>Clothing Store</option>
+								</select>
+							</td>
+						</tr> 
+						<tr><!-- Table Data --> <td>Second Preference</td> 
+							<!-- Second preference selection--> 
+							<td>
+								<select name=“app”>
+									<option value=“coffee-shop”>Coffee Shop</option>
+									<option value=“cafe-menu”>Cafe Menu</option>
+								</select>
+							</td>
+						</tr> 
+						<tr><!-- Table Data --> <td>Third Preference</td> 
+							<!-- Third preference selection--> 
+							<td>
+								<select name=“dashboard”>
+									<option value=“data-dashboard”>Data Dashboard</option>
+								</select>
+							</td>
+						</tr>
+					</table> 
+					
+					<div class="next">
+						<button type='submit' id='submitProjectPreferences'>SUBMIT</button>
+					</div>
 				</form>
-			</article> 
-			<!-- Background circle shape --> <div id="circle"></div>
+			</article> 			
 		</main>
-		<footer role="contentinfo"> 
+		<footer role="contentinfo" class="footer"> 
 			<!-- Copyright information and contact link --> 
 			Copyright &copy; 2019 <a href="mailto:s3514128@student.rmit.edu.au">Contact</a> 
 			<!-- This website has been created as part of an assignment in an approved course of study for RMIT University and contains 
