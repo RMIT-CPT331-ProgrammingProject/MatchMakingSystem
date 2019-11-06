@@ -42,10 +42,14 @@ table {
 }
 table .first {
 	width: 350px;
-	padding-left: 20px;
+	padding-left: 20px;	
 }
 td {
 	padding-right: 10px;
+	border-bottom: 1px solid #c8d2de;
+}
+.margin-auto {
+	margin: 0 auto;
 }
 .left_nav {
 	min-width: 195px;
@@ -146,6 +150,17 @@ td {
 	width: 500px;
 	height: 500px; 
 	right: -20%;
+	position: fixed;
+	background: #ffc43940;
+	overflow: hidden;
+	z-index: -1;
+}
+#circle-top {
+	border-radius: 50%;
+	width: 500px;
+	height: 500px; 
+	left: -20%;
+	top: -30%;
 	position: fixed;
 	background: #ffc43940;
 	overflow: hidden;
@@ -268,6 +283,28 @@ td {
 }
 .breadcrumbs span {
 	margin-right: 5px;
+}
+.signin {
+	text-align: center;
+    top: 10%;
+    position: relative;
+}
+.signin h1 {
+	margin-bottom: 50px;
+}
+.signin .card {
+	padding: 30px 100px;
+}
+.btn-black {
+	background: #5a6978;
+	width: 200px;
+	color: #FFFFFF;
+	border: 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.signin a.pass-recovery {
+	font-size: 12px;
 }
 .footer {
 	position: absolute;

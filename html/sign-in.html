@@ -22,27 +22,36 @@
 	</head>
 	<body>
 		<!--WAI-ARIA landmark roles for accessibility with screen readers-->
-		<header role="banner" class="left_nav">
+		<header role="banner">
 			<!-- Main site navigation menu -->
 		</header>
+		<!-- Background circle shape --> 
+		<div id="circle-top"></div>
 		<!-- Main content, Secondary page links, and Background circle shape -->
-		<main>
+		<main class="margin-auto">
 			<!-- Webpage's main text -->
-			<article class="Top-page-header" role="article"> 
+			<article class="signin" role="article">
 				<h1><strong>GroupStack</strong></h1>
-				<h1>Sign In</h1>
-				<h2>Don’t have an account?</h2>
-				<form id=“” action=“.php” method=“post”>
-					<!-- Log in fields -->
-					<input type='email' name='username' placeholder='Email' required='required' />
-					<input type='password' name='password' placeholder='Password' required='required' />
-					<input type='submit' name=‘signIn’ value='Sign in'/>
-				</form>
-				<a href="password-reset.html" >Forgot your password?</a>
+				<div class="card">
+					<div class="card-body">
+						<h2 class="card-title">Sign In</h2>
+						<a href="#">Don’t have an account?</a><br/><br/>
+						<form id="" action=".php" method="post">
+							<div class="form-group">
+								<!-- Log in fields -->
+								<input type='email' class="form-control" name='username' placeholder='Email' required='required' /><br/>
+								<input type='password' class="form-control" name='password' placeholder='Password' required='required' /><br/>
+								<button type='submit' class="btn-black" name="signIn">Sign in</button>
+							</div>
+						</form>
+						<a href="password-reset.html" class="pass-recovery" >Forgot your password?</a>
+					</div>
+				</div>
 			</article>
-			<!-- Background circle shape --> <div id="circle"></div>
+			<!-- Background circle shape --> 
+			<div id="circle"></div>
 		</main>
-		<footer role="contentinfo">
+		<footer role="contentinfo" class="footer">
 			<!-- Copyright information and contact link --> Copyright &copy; 2019 
 			<a href="mailto:s3514128@student.rmit.edu.au">Contact</a>
 			<!-- This website has been created as part of an assignment in an approved course of study for RMIT
