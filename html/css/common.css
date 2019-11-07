@@ -193,10 +193,10 @@ td {
 	margin-top: 5px;
 	font-size: 14px;
 }
-.content_body input, .content_body select {
+input, select {
 	padding: 5px 10px;
 	font-size: 12px;
-	width: 250px;
+	width: 200px;
 	margin-bottom: 0px;
 	border-radius: 4px;
 	border: 1px solid #d3d3d3;
@@ -305,6 +305,15 @@ td {
 }
 .signin a.pass-recovery {
 	font-size: 12px;
+}
+.signin .step.active {
+	display: block;
+}
+.signin .step {
+	display: none;
+} 
+.signin input, .signin select {
+	margin-bottom: 10px;
 }
 .footer {
 	position: absolute;

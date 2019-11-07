@@ -16,61 +16,90 @@
 		<script src="./bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>
-		<script> jQuery(document).ready(function(){ $(".left_nav").height($(document).height()-50); $(".footer").css("top",$(document).height()-30); }); </script>
+		<script> 
+		jQuery(document).ready(function(){ 
+			$(".left_nav").height($(document).height()-50); 
+			$(".footer").css("top",$(document).height()-30); 
+			
+			var index = $(".step.active").index(".step"),
+			stepsCount = $(".step").length,
+			nextBtn = $("#nextBtn");
+
+			nextBtn.click(function() {
+				if (index < stepsCount - 1) {
+					index++;
+					$(".step").removeClass("active").eq(index).addClass("active");
+				};
+
+				if (index === stepsCount - 1) {
+					$(this).hide();
+					$("#registerBtn").attr( "style", "display: block !important;" );
+				}
+			});
+		}); </script>
 		<!-- HTML5 Shiv - javascript code to help correctly display styles -->
 		<!--[if lt IE 9]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
 	</head>
 	<body>
 		<!--WAI-ARIA landmark roles for accessibility with screen readers-->
-		<header role="banner" class="left_nav">
+		<header role="banner" >
 			<!-- Main site navigation menu -->
 		</header>
+		<!-- Background circle shape --> 
+		<div id="circle-top"></div>
 		<!-- Main content, Secondary page links, and Background circle shape -->
-		<main>
+		<main class="margin-auto">
 			<!-- Webpage's main text -->
-			<article class="Top-page-header" role="article"> <h1><strong>GroupStack</strong></h1>
-				<h1>Register</h1>
-				<h2>Already have an account?</h2>
-				<form id=“” action=“.php” method=“post”>
-					<!-- FIRST SECTION -->
-					<div>
-						<input type='email' name='username' placeholder='Email' required='required' />
-						<input type='password' name='password' placeholder='Password' required='required' />
-						<input type='password' name='passwordConfirm' placeholder='Confirm Password' required='required' />
+			<article class="signin" role="article"> 
+				<h1><strong>GroupStack</strong></h1>
+				<div class="card">
+					<div class="card-body">
+						<h2 class="card-title">Register</h2>
+						<a href="">Already have an account?</a><br/><br/>
+						<form id=“” action=“.php” method=“post”>
+							<div class="form-group">
+								<!-- FIRST SECTION -->
+								<div class="form-group step active">
+									<input type='email' name='username' placeholder='Email' required='required' /><br/>
+									<input type='password' name='password' placeholder='Password' required='required' /><br/>
+									<input type='password' name='passwordConfirm' placeholder='Confirm Password' required='required' />
+								</div>
+								<!-- SECOND SECTION -->
+								<div class="form-group step">
+									<input type='button' name='button_student' value='Student' /><br/>
+									<input type='button' name='button_mentor' value='Mentor' /><br/>
+									<input type='button' name='button_coordinator' value='Coordinator' />
+								</div>
+								<!-- THIRD SECTION -->
+								<div class="form-group step">
+									<input type='text' name='firstName' placeholder='First Name' required='required' /><br/>
+									<input type='text' name='lastName' placeholder='Last Name' required='required' /><br/>
+									<select name='country'>
+										<option value='' selected>Country</option>
+										<option value='au'>Australia</option>
+										<option value='nz'>New Zealand</option>
+										<option value='us'>United States of America</option>
+									</select><br/>
+									<select name='city'>
+										<option value='' selected>City</option>
+										<option value='mel'>Melbourne</option>
+										<option value='syd'>Sydney</option>
+										<option value='per'>Perth</option>
+									</select>
+								</div>
+								<!-- BUTTONS: NEXT / REGISTER -->
+								<div>
+									<button type='button' id='nextBtn' class="btn-black" onclick=' '>Next</button>
+									<button type='submit' id='registerBtn' name='registerBtn' class="btn-black d-none">Register</button>
+								</div>
+							</div>
+						</form>
 					</div>
-					<!-- SECOND SECTION -->
-					<div>
-						<input type='button' name='button_student' value='Student' />
-						<input type='button' name='button_mentor' value='Mentor' />
-						<input type='button' name='button_coordinator' value='Coordinator' />
-					</div>
-					<!-- THIRD SECTION -->
-					<div>
-						<input type='text' name='firstName' placeholder='First Name' required='required' />
-						<input type='text' name='lastName' placeholder='Last Name' required='required' />
-						<select name='country'>
-							<option value='' selected>Country</option>
-							<option value='au'>Australia</option>
-							<option value='nz'>New Zealand</option>
-							<option value='us'>United States of America</option>
-						</select>
-						<select name='city'>
-							<option value='' selected>City</option>
-							<option value='mel'>Melbourne</option>
-							<option value='syd'>Sydney</option>
-							<option value='per'>Perth</option>
-						</select>
-					</div>
-					<!-- BUTTONS: NEXT / REGISTER -->
-					<div>
-						<button type='button' id='nextBtn' onclick=' '>Next</button>
-						<input type='submit' id='registerBtn' name='registerBtn' value='Register'/>
-					</div>
-				</form>
+				</div>
 			</article>
 			<!-- Background circle shape --> <div id="circle"></div>
 		</main>
-		<footer role="contentinfo">
+		<footer role="contentinfo" class="footer">
 			<!-- Copyright information and contact link --> Copyright &copy; 2019 
 			<a href="mailto:s3514128@student.rmit.edu.au">Contact</a>
 			<!-- This website has been created as part of an assignment in an approved course of study for RMIT
