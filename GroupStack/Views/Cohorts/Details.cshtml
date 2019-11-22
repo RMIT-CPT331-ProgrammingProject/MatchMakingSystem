@@ -1,0 +1,92 @@
+﻿@model GroupStack.Models.Cohort
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Cohort</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CoordinatorId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CoordinatorId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CohortName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CohortName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MinSize)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MinSize)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxSize)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaxSize)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PreferencesDeadline)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PreferencesDeadline)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HardDeadline)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HardDeadline)
+        </dd>
+        <dt class="col-sm-2">
+            Groups
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Groups.Count
+        </dd>
+    </dl>
+</div>
+@if (Model.Groups.Count == 0)
+{
+    if (User.IsInRole("Coordinator") || true)
+    {
+        <a href="~/Cohorts/Assign/@(Model.CohortId)">Assign Groups.</a>
+    }
+
+    if (User.IsInRole("Mentor"))
+    {
+        <a href="~/Projects/Index/@(Model.CohortId)">Add a project.</a>
+    }
+    if (User.IsInRole("Student"))
+    {
+        <a href="~/Projects/Index/@(Model.CohortId)">View projects.</a>
+        <a href="~/Preferences/">Select your preferences.</a>
+    }
+}
+else
+{
+    foreach (var group in Model.Groups)
+    {
+        <div class="block">
+            <h4>
+                @Html.DisplayFor(groupItem => group.GroupName)
+            </h4>
+            <p class="action">
+                <!--<a asp-area="Groups" asp-action="Details" asp-route-id="@group.GroupId">View</a>-->
+                <a href="~/Groups/Details/@group.GroupId">View</a>
+            </p>
+        </div>
+    }
+}
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.CohortId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

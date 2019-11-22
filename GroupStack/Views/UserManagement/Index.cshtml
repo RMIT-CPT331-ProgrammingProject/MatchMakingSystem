@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using GroupStack.Data
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<h1>User Management</h1>
+
+<div class="table">
+    <div class="table-header-group">
+        <div class="table-row">
+            <div class="table-cell">
+                User
+            </div>
+            <div class="table-cell">
+                Administrator
+            </div>
+            <div class="table-cell">
+                Coordinator
+            </div>
+            <div class="table-cell">
+                Mentor
+            </div>
+            <div class="table-cell">
+                Student
+            </div>
+            <div class="table-cell"></div>
+        </div>
+    </div>
+    <div class="table-row-group">
+        @foreach (var user in UserManager.Users)
+        {
+        <form class="table-row" asp-action="Update">
+            <div class="table-cell">
+                @Html.DisplayFor(modelItem => user.Email)
+                <input type="text" name="UserId" value="@user.Id" hidden />
+            </div>
+            @foreach (var roleName in Constants.roles)
+            {
+                if (await UserManager.IsInRoleAsync(user, roleName))
+                {
+                    <div class="table-cell">
+                        <input class="check-box" name="@roleName" checked="checked" type="checkbox">
+                    </div>
+                }
+                else
+                {
+                    <div class="table-cell">
+                        <input class="check-box" name="@roleName" type="checkbox">
+                    </div>
+                }
+            }
+            <div class="table-cell"><input type="submit" value="Update" /></div>
+        </form>
+        }
+    </div>
+</div>

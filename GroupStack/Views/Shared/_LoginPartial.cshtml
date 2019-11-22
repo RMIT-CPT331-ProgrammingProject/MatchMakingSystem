@@ -1,0 +1,41 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<div>
+@if (SignInManager.IsSignedIn(User))
+{
+    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">
+        <img src="~/img/profile_blank.png" alt="Person" class="profile_img" />
+        <p><b>@User.Identity.Name.ToString().Split(new[] { '@' })[0]</b></p>
+    </a>
+    @if (User.IsInRole("Administrator"))
+    {
+        <p class="profile_role">Administrator</p>
+    }
+    else if (User.IsInRole("Coordinator"))
+    {
+        <p class="profile_role">Course Coordinator</p>
+    }
+    else if (User.IsInRole("Mentor"))
+    {
+        <p class="profile_role">Mentor</p>
+    }
+    else
+    {
+        <p class="profile_role">Student</p>
+    }
+    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+    </form>
+}
+else
+{
+    <p class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </p>
+    <p class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </p>
+}
+</div>

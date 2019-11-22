@@ -1,0 +1,29 @@
+﻿.table {
+    display: table;
+    border-collapse: collapse;
+}
+
+.table-header-group {
+    display: table-header-group;
+}
+
+.table-row-group {
+    display: table-row-group;
+}
+
+.table-row {
+    display: table-row;
+}
+
+.table-header-group .table-cell {
+    font-weight: bold;
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-cell {
+    display: table-cell;
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}

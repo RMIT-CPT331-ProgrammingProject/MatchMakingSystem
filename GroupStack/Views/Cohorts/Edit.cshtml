@@ -1,0 +1,64 @@
+﻿@model GroupStack.Models.Cohort
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Cohort</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CohortId" />
+            <div class="form-group">
+                <label asp-for="CoordinatorId" class="control-label"></label>
+                <input asp-for="CoordinatorId" class="form-control" />
+                <span asp-validation-for="CoordinatorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CohortName" class="control-label"></label>
+                <input asp-for="CohortName" class="form-control" />
+                <span asp-validation-for="CohortName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UniName" class="control-label"></label>
+                <input asp-for="UniName" class="form-control" />
+                <span asp-validation-for="UniName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinSize" class="control-label"></label>
+                <input asp-for="MinSize" class="form-control" />
+                <span asp-validation-for="MinSize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxSize" class="control-label"></label>
+                <input asp-for="MaxSize" class="form-control" />
+                <span asp-validation-for="MaxSize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PreferencesDeadline" class="control-label"></label>
+                <input asp-for="PreferencesDeadline" class="form-control" />
+                <span asp-validation-for="PreferencesDeadline" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="HardDeadline" /> @Html.DisplayNameFor(model => model.HardDeadline)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

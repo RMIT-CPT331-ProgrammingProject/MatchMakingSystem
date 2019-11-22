@@ -1,0 +1,70 @@
+﻿@using GroupStack.Data
+@model IEnumerable<GroupStack.Models.Project>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@if (User.IsInRole(Constants.CoordinatorRole) || User.IsInRole(Constants.MentorRole))
+{
+    <p>
+        <a asp-action="Create" asp-route-id="@ViewData["id"]">Create New</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cohort.CohortName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mentor)
+            </th>
+            <th>
+                Group Size
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxGroups)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cohort.CohortName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mentor.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MinSize) - @Html.DisplayFor(modelItem => item.MaxSize)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxGroups)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

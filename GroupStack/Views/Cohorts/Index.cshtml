@@ -1,0 +1,109 @@
+﻿@using GroupStack.Data
+@model IEnumerable<GroupStack.Models.Cohort>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>Student Cohorts</h2>
+
+@if (User.IsInRole(Constants.AdministratorRole) || User.IsInRole(Constants.CoordinatorRole))
+{
+<p>
+    <a asp-action="Create">Add New Cohort</a>
+</p>
+}
+@if (User.IsInRole(Constants.AdministratorRole))
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CoordinatorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CohortName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UniName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MinSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PreferencesDeadline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HardDeadline)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CoordinatorId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CohortName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UniName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PreferencesDeadline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HardDeadline)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CohortId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CohortId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CohortId">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+}
+@foreach (var item in Model)
+{
+<div class="block">
+    <img src="~/img/rmit-logo.png" alt="University name logo" width="105" />
+    <h4>
+        @Html.DisplayFor(modelItem => item.CohortName)
+    </h4>
+    <p>
+        @Html.DisplayFor(modelItem => item.CoordinatorId)
+    </p>
+    @if (DateTime.Now < item.PreferencesDeadline)
+    {
+        <div class="status"><img src="~/img/status-open.jpg" width="20" alt="status" />Taking Preferences</div>
+    }
+    else
+    {
+        <div class="status"><img src="~/img/status-closed.jpg" width="20" alt="status" />Preferences Closed</div>
+    }
+    <p class="action">
+        <a asp-action="Details" asp-route-id="@item.CohortId">View</a>
+        @if (User.Identity.Name == item.CoordinatorId)
+        {
+            <span>
+                | <a asp-action="Edit" asp-route-id="@item.CohortId">Edit</a>
+                | <a asp-action="Delete" asp-route-id="@item.CohortId">Delete</a>
+            </span>
+        }
+    </p>
+</div>
+}
