@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GroupStack.Data;
 using GroupStack.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace GroupStack.Controllers
 {
@@ -15,17 +16,27 @@ namespace GroupStack.Controllers
     public class GroupAssignmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public GroupAssignmentsController(ApplicationDbContext context)
+        public GroupAssignmentsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: GroupAssignments
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.GroupAssignment.Include(g => g.Group).Include(s => s.Student);
-            return View(await applicationDbContext.ToListAsync());
+            var applicationDbContext = _context.GroupAssignment.Include(g => g.Group).Include(s => s.Student)
+                .OrderBy(g => g.Student.Email).OrderBy(g => g.Group.GroupName);
+            if (User.IsInRole(Constants.AdministratorRole))
+            {
+                return View(await applicationDbContext.ToListAsync());
+            }
+            else
+            {
+                return View(await applicationDbContext.Where(g => g.Student.Email == User.Identity.Name).ToListAsync());
+            }
         }
 
         // GET: GroupAssignments/Details/5
@@ -48,9 +59,10 @@ namespace GroupStack.Controllers
         }
 
         // GET: GroupAssignments/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             ViewData["GroupId"] = new SelectList(_context.Group, "GroupId", "GroupName");
+            ViewData["StudentId"] = new SelectList((await _userManager.GetUsersInRoleAsync(Constants.StudentRole)).ToList(), "Email", "Email");
             return View();
         }
 
@@ -77,6 +89,7 @@ namespace GroupStack.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["GroupId"] = new SelectList(_context.Group, "GroupId", "GroupName", groupAssignment.GroupId);
+            ViewData["StudentId"] = new SelectList((await _userManager.GetUsersInRoleAsync(Constants.StudentRole)).ToList(), "Email", "Email", groupAssignment.StudentId);
             return View(groupAssignment);
         }
 
@@ -93,7 +106,7 @@ namespace GroupStack.Controllers
             {
                 return NotFound();
             }
-            ViewData["GroupId"] = new SelectList(_context.Group, "GroupId", "GroupId", groupAssignment.GroupId);
+            ViewData["GroupId"] = new SelectList(_context.Group, "GroupId", "GroupName", groupAssignment.GroupId);
             return View(groupAssignment);
         }
 
@@ -129,7 +142,7 @@ namespace GroupStack.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GroupId"] = new SelectList(_context.Group, "GroupId", "GroupId", groupAssignment.GroupId);
+            ViewData["GroupId"] = new SelectList(_context.Group, "GroupId", "GroupName", groupAssignment.GroupId);
             return View(groupAssignment);
         }
 

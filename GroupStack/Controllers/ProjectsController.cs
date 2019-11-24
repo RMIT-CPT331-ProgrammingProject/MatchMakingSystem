@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GroupStack.Data;
 using GroupStack.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace GroupStack.Controllers
 {
@@ -15,10 +16,12 @@ namespace GroupStack.Controllers
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ProjectsController(ApplicationDbContext context)
+        public ProjectsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Projects
@@ -26,13 +29,14 @@ namespace GroupStack.Controllers
         {
             if (id == null)
             {
-                var projects = await _context.Project.Include(p => p.Cohort).Include(p => p.Mentor).ToListAsync();
+                var projects = await _context.Project.Include(p => p.Cohort).Include(p => p.Mentor).OrderBy(p => p.ProjectName).OrderBy(p => p.Cohort.CohortName).ToListAsync();
                 return View(projects);
             }
             else
             {
-                var projects = await _context.Project.Include(p => p.Cohort).Include(p => p.Mentor).Where(p => p.CohortId == id).ToListAsync();
+                var projects = await _context.Project.Include(p => p.Cohort).Include(p => p.Mentor).OrderBy(p => p.ProjectName).Where(p => p.CohortId == id).ToListAsync();
                 ViewData["id"] = id;
+                ViewData["cohortName"] = (await _context.Cohort.FindAsync(id)).CohortName;
                 return View(projects);
             }
         }
@@ -59,7 +63,7 @@ namespace GroupStack.Controllers
 
         // GET: Projects/Create
         [Authorize(Roles = "Coordinator,Mentor")]
-        public IActionResult Create(int? id)
+        public async Task<IActionResult> Create(int? id)
         {
             if (id == null)
             {
@@ -71,7 +75,7 @@ namespace GroupStack.Controllers
                 ViewData["MinSize"] = _context.Cohort.Find(id).MinSize;
                 ViewData["MaxSize"] = _context.Cohort.Find(id).MaxSize;
             }
-            ViewData["MentorId"] = new SelectList(_context.Users, "Id", "Email");
+            ViewData["MentorId"] = new SelectList((await _userManager.GetUsersInRoleAsync(Constants.MentorRole)).ToList(), "Id", "Email");
             return View();
         }
 
@@ -87,10 +91,10 @@ namespace GroupStack.Controllers
             {
                 _context.Add(project);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = project.CohortId });
             }
             ViewData["CohortId"] = new SelectList(_context.Cohort, "CohortId", "CohortId", project.CohortId);
-            ViewData["MentorId"] = new SelectList(_context.Users, "Id", "Id", project.MentorId);
+            ViewData["MentorId"] = new SelectList((await _userManager.GetUsersInRoleAsync(Constants.MentorRole)).ToList(), "Id", "Email");
             return View(project);
         }
 
@@ -144,10 +148,10 @@ namespace GroupStack.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = project.CohortId });
             }
             ViewData["CohortId"] = new SelectList(_context.Cohort, "CohortId", "CohortId", project.CohortId);
-            ViewData["MentorId"] = new SelectList(_context.Users, "Id", "Id", project.MentorId);
+            ViewData["MentorId"] = new SelectList((await _userManager.GetUsersInRoleAsync(Constants.MentorRole)).ToList(), "Id", "Email", project.MentorId);
             return View(project);
         }
 

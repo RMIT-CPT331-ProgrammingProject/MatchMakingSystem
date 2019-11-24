@@ -22,6 +22,7 @@ namespace GroupStack.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            /* Define all composite keys in database.*/
             builder.Entity<Whitelist>().HasKey(c => new { c.CohortId, c.UserId });
             builder.Entity<Preferences>().HasKey(c => new { c.StudentId, c.CohortId });
             builder.Entity<GroupAssignment>().HasKey(c => new { c.GroupId, c.StudentId });

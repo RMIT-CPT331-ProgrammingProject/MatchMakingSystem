@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="table-row-group">
-        @foreach (var user in UserManager.Users)
+        @foreach (var user in UserManager.Users.OrderBy(u => u.Email))
         {
         <form class="table-row" asp-action="Update">
             <div class="table-cell">

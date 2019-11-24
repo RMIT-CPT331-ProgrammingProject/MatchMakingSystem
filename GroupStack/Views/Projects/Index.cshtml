@@ -6,6 +6,10 @@
 }
 
 <h1>Index</h1>
+@if (ViewBag.cohortName != null)
+{
+<h4>@ViewBag.cohortName</h4>
+}
 
 @if (User.IsInRole(Constants.CoordinatorRole) || User.IsInRole(Constants.MentorRole))
 {
@@ -13,7 +17,7 @@
         <a asp-action="Create" asp-route-id="@ViewData["id"]">Create New</a>
     </p>
 }
-<table class="table">
+<table class="table table-alternating">
     <thead>
         <tr>
             <th>
@@ -21,9 +25,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProjectName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Mentor)
@@ -48,9 +49,6 @@
                     @Html.DisplayFor(modelItem => item.ProjectName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Mentor.Email)
                 </td>
                 <td>
@@ -60,9 +58,27 @@
                     @Html.DisplayFor(modelItem => item.MaxGroups)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
+@if (User.IsInRole(Constants.AdministratorRole) || User.IsInRole(Constants.CoordinatorRole)
+    || User.IsInRole(Constants.MentorRole))
+{
+                    <span>
+                        <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
+                    </span>
+}
+else
+{
+                    <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a>
+}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(modelItem => item.Description)
+                </td>
+                <td colspan="5">
+                    @Html.DisplayFor(modelItem => item.Description)
                 </td>
             </tr>
         }

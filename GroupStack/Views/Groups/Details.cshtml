@@ -20,7 +20,7 @@
             @Html.DisplayNameFor(model => model.Project)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Project.ProjectId)
+            @Html.DisplayFor(model => model.Project.ProjectName)
         </dd>
         <dt class="col-sm-2">
             Group Size
@@ -29,6 +29,29 @@
             @Model.GroupAssignments.Count
         </dd>
     </dl>
+</div>
+<div>
+
+    @foreach (var member in Model.GroupAssignments.OrderBy(g => g.Student.Email))
+    {
+    <dl class="row">
+        <dt>
+            <img class="gm_img_large" src="~/img/group_member_0@(Model.GroupAssignments.IndexOf(member)%4+1).png" alt="@member.Student.Email" title="@member.Student.Email" />
+        </dt>
+        <dt class="table-cell-centered">
+            @member.Student
+        </dt>
+        <dd class="table-cell-centered">
+            @member.Role
+        </dd>
+@if (member.Student.Email == User.Identity.Name)
+{
+        <dd class="table-cell-centered">
+            <a href="~/GroupAssignments/Edit?group=@(Model.GroupId)&student=@(member.StudentId)">Edit</a>
+        </dd>
+}
+    </dl>
+    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.GroupId">Edit</a> |

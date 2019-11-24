@@ -56,7 +56,8 @@ namespace GroupStack.Controllers
             }
 
             var group = await _context.Group
-                .Include(p => p.Project)
+                .Include(g => g.Project)
+                .Include("GroupAssignments.Student")
                 .FirstOrDefaultAsync(m => m.GroupId == id);
             if (group == null)
             {
@@ -106,7 +107,7 @@ namespace GroupStack.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProjectId"] = new SelectList(_context.Project, "ProjectId", "ProjectId", group.ProjectId);
+            ViewData["ProjectId"] = new SelectList(_context.Project, "ProjectId", "ProjectName", group.ProjectId);
             return View(group);
         }
 
@@ -145,7 +146,7 @@ namespace GroupStack.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjectId"] = new SelectList(_context.Project, "ProjectId", "ProjectId", group.ProjectId);
+            ViewData["ProjectId"] = new SelectList(_context.Project, "ProjectId", "ProjectName", group.ProjectId);
             return View(group);
         }
 

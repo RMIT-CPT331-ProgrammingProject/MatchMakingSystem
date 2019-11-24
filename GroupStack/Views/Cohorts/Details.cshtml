@@ -1,4 +1,5 @@
-﻿@model GroupStack.Models.Cohort
+﻿@using GroupStack.Data
+@model GroupStack.Models.Cohort
 
 @{
     ViewData["Title"] = "Details";
@@ -23,16 +24,10 @@
             @Html.DisplayFor(model => model.CohortName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MinSize)
+            Group Size
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MinSize)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MaxSize)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MaxSize)
+            @Html.DisplayFor(model => model.MinSize) - @Html.DisplayFor(model => model.MaxSize)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PreferencesDeadline)
@@ -40,53 +35,85 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PreferencesDeadline)
         </dd>
+@if (User.IsInRole(Constants.AdministratorRole) || User.IsInRole(Constants.CoordinatorRole))
+{
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.HardDeadline)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.HardDeadline)
         </dd>
+}
         <dt class="col-sm-2">
-            Groups
+            Assigned Groups
         </dt>
         <dd class="col-sm-10">
             @Model.Groups.Count
         </dd>
     </dl>
 </div>
+@if (User.IsInRole("Coordinator"))
+{
+        <h5>Coordinator:</h5>
+        <a href="~/Whitelists/Create/@(Model.CohortId)">Assign Students or Mentors to Cohort.</a>
+}
+
 @if (Model.Groups.Count == 0)
 {
-    if (User.IsInRole("Coordinator") || true)
+    if (User.IsInRole("Coordinator"))
     {
         <a href="~/Cohorts/Assign/@(Model.CohortId)">Assign Groups.</a>
     }
 
     if (User.IsInRole("Mentor"))
     {
+        <h5>Mentor:</h5>
         <a href="~/Projects/Index/@(Model.CohortId)">Add a project.</a>
     }
     if (User.IsInRole("Student"))
     {
+        <h5>Student:</h5>
         <a href="~/Projects/Index/@(Model.CohortId)">View projects.</a>
-        <a href="~/Preferences/">Select your preferences.</a>
+        @if (ViewData["PreferencesSelected"] == null && (!Model.HardDeadline || DateTime.Compare(DateTime.Now, Model.PreferencesDeadline) < 0))
+        {
+        <a href="~/Preferences/Create/@(Model.CohortId)">Select your preferences.</a>
+        }
+        else
+        {
+        <a href="~/Preferences/">View your preferences.</a>
+        }
     }
 }
 else
 {
-    foreach (var group in Model.Groups)
+    <div>
+    @foreach (var group in Model.Groups)
     {
+        var groupIndex = Model.Groups.IndexOf(group);
+        var colourClasses = new string[] {"blue", "yellow", "red"};
         <div class="block">
+            <div class="group_no @colourClasses[groupIndex % colourClasses.Length] ">
+                @(groupIndex + 1)
+            </div>
             <h4>
                 @Html.DisplayFor(groupItem => group.GroupName)
             </h4>
+@foreach (var member in group.GroupAssignments.OrderBy(g => g.Student.Email))
+{
+            <img class="gm_img" src="~/img/group_member_0@(group.GroupAssignments.IndexOf(member)%4+1).png" alt="@member.Student.Email" title="@member.Student.Email" />
+}
             <p class="action">
                 <!--<a asp-area="Groups" asp-action="Details" asp-route-id="@group.GroupId">View</a>-->
                 <a href="~/Groups/Details/@group.GroupId">View</a>
             </p>
         </div>
     }
+    </div>
 }
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.CohortId">Edit</a> |
+    @if (User.IsInRole("Administrator") || User.IsInRole("Coordinator"))
+    {
+        <span><a asp-action="Edit" asp-route-id="@Model.CohortId">Edit</a> |</span>
+    }
     <a asp-action="Index">Back to List</a>
 </div>

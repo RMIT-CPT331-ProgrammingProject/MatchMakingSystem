@@ -10,7 +10,14 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+@{
+    var parameters = new Dictionary<string, string>
+    {
+        { "group", Model.GroupId.ToString() },
+        { "student", Model.StudentId }
+    };
+}
+        <form asp-action="Edit" asp-all-route-data="parameters">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="GroupId" />
             <input type="hidden" asp-for="StudentId" />
@@ -27,7 +34,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a href="~/Groups/Details/@(Model.GroupId)">Back to Group</a>
 </div>
 
 @section Scripts {

@@ -44,11 +44,18 @@ namespace GroupStack.Controllers
                 return NotFound();
             }
 
-            var cohort = await _context.Cohort.Include(m => m.Groups)
+            var cohort = await _context.Cohort.Include("Groups.GroupAssignments.Student")
                 .FirstOrDefaultAsync(m => m.CohortId == id);
             if (cohort == null)
             {
                 return NotFound();
+            }
+
+            /* Check if user has already selected preferences for this cohort.*/
+            if (User.IsInRole(Constants.StudentRole)
+                && _context.Preferences.Any(p => p.CohortId == id && p.Student.Email == User.Identity.Name))
+            {
+                ViewData["PreferencesSelected"] = true;
             }
 
             return View(cohort);
@@ -163,6 +170,7 @@ namespace GroupStack.Controllers
         }
 
         // GET: Cohorts/Assign/5
+        // Page to automatically assign students into groups.
         [Authorize(Roles = "Coordinator")]
         [HttpGet, ActionName("Assign")]
         public async Task<IActionResult> Assign(int? id)
@@ -172,6 +180,7 @@ namespace GroupStack.Controllers
                 return NotFound();
             }
 
+            ViewData["preferenceCount"] = _context.Preferences.Where(p => p.CohortId == id).ToList().Count;
             var cohort = await _context.Cohort.Include(w => w.Whitelist).FirstOrDefaultAsync(c => c.CohortId == id);
             if (cohort == null)
             {
@@ -188,57 +197,101 @@ namespace GroupStack.Controllers
         public async Task<IActionResult> AssignConfirmed(int id)
         {
             var cohort = await _context.Cohort.FindAsync(id);
-            var projects = await _context.Project.Where(p => p.CohortId == id).ToListAsync();
-            var preferences = await _context.Preferences.Include(p => p.Student).Where(p => p.CohortId == id).ToListAsync();
+            var cohortProjects = await _context.Project.Where(p => p.CohortId == id).ToListAsync();
+            var cohortPreferences = await _context.Preferences.Include(p => p.Student).Where(p => p.CohortId == id).ToListAsync();
 
-            /* Create tally to count the number of students per project.*/
-            var projectTally = new Dictionary<Project, int>();
-            foreach (var project in projects)
+            /* Create container to organise students as they are sorted.*/
+            var tempAssignments = new Dictionary<Project, List<Preferences>>();
+            var assignmentsValidated = new Dictionary<Project, bool>();
+            foreach (var project in cohortProjects)
             {
-                projectTally.Add(project, 0);
+                tempAssignments.Add(project, new List<Preferences>());
+                assignmentsValidated.Add(project, false);
             }
 
-            /* */
-            foreach (var preference in preferences)
+            /* Allocate students to their first preferences.*/
+            foreach (var preference in cohortPreferences)
             {
-                projectTally[preference.ProjectFirst]++;
+                tempAssignments[preference.ProjectFirst].Add(preference);
             }
 
-            foreach (var project in projects)
+            /* Attempt to reallocate students if first preference is not suitable.*/
+            var round = 0; /* Stop optimisation after 5 rounds.*/
+            while (assignmentsValidated.Any(a => a.Value == false) && round < 5)
             {
-                var studentsInProject = preferences.Where(p => p.ProjectFirst == project).ToList();
-                var projectGroupQty = (double)projectTally[project] / cohort.MaxSize; /* Minimum number of groups required.*/
-                var groups = new List<Group>();
-
-                for (int i = 0; i < projectGroupQty; i++)
+                foreach (var project in cohortProjects)
                 {
-                    groups.Add(new Group(project, id));
+                    var studentsForProject = tempAssignments[project].Count;
+                    var projectGroupQty = (double)studentsForProject / project.MaxSize;
+                    /* Check if either there aren't enough students to fill a group or there are too many students
+                     * to fill the maximum number of groups.*/
+                    if (projectGroupQty * project.MinSize <= studentsForProject
+                        && studentsForProject <= project.MaxSize * project.MaxGroups)
+                    {
+                        assignmentsValidated[project] = true;
+                    }
+                    else
+                    {
+                        assignmentsValidated[project] = false;
+                    }
                 }
 
-                foreach (var group in groups)
+                foreach (var projectValidated in assignmentsValidated.Where(a=> a.Value == false))
                 {
+                    var project = projectValidated.Key;
+                    var excessStudents = tempAssignments[project].Count - project.MaxSize * project.MaxGroups;
+                    /* If a project has more than the maximum number of students reallocate from first preference to
+                     * second preference.*/
+                    if (0 < excessStudents)
+                    {
+                        var tempAssignmentsFirstChoice = tempAssignments[project].Where(a => a.ProjectFirst == project).ToList();
+                        for (var i = 0; i < excessStudents; i++)
+                        {
+                            var studentPreferences = tempAssignmentsFirstChoice.FirstOrDefault();
+                            if (studentPreferences != null)
+                            {
+                                tempAssignments[studentPreferences.ProjectSecond].Add(studentPreferences);
+                                tempAssignments[studentPreferences.ProjectFirst].Remove(studentPreferences);
+                                tempAssignmentsFirstChoice.Remove(studentPreferences);
+                            }
+                        }
+                    }
+                }
+                round++;
+            }
+
+            foreach (var project in cohortProjects)
+            {
+                var groups = new List<Group>();
+                var projectGroupQty = (double)tempAssignments[project].Count / project.MaxSize;
+
+                /* Create new groups sufficient to hold the students for this project. */
+                for (int i = 0; i < projectGroupQty; i++)
+                {
+                    var newGroup = new Group(project, id);
+                    
                     if (ModelState.IsValid)
                     {
-                        _context.Add(group);
+                        _context.Add(newGroup);
                         await _context.SaveChangesAsync();
                     }
 
-                    while (0 < studentsInProject.Count && group.GroupAssignments.Count < cohort.MaxSize)
+                    while (0 < tempAssignments[project].Count && newGroup.GroupAssignments.Count < project.MaxSize)
                     {
-                        var nextStudentPreferences = studentsInProject.FirstOrDefault();
-                        var groupAssignment = new GroupAssignment(group, nextStudentPreferences.Student);
+                        var nextPreference = tempAssignments[project].FirstOrDefault();
+                        var newGroupAssignment = new GroupAssignment(newGroup, nextPreference.Student);
 
                         if (ModelState.IsValid)
                         {
-                            _context.Add(groupAssignment);
+                            _context.Add(newGroupAssignment);
                             await _context.SaveChangesAsync();
                         }
-                        studentsInProject.Remove(nextStudentPreferences);
+                        tempAssignments[project].Remove(nextPreference);
                     }
                 }
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         private bool CohortExists(int id)

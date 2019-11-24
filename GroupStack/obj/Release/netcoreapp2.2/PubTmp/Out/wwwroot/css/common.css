@@ -12,7 +12,6 @@ a {
 }
 .body {
 	float: left;
-	width: 85%;
 	position: relative;
 	min-width: 420px;
 	min-height: 100vh;
@@ -43,10 +42,6 @@ table {
 table .first {
 	width: 350px;
 	padding-left: 20px;	
-}
-td {
-	padding-right: 10px;
-	border-bottom: 1px solid #c8d2de;
 }
 .margin-auto {
 	margin: 0 auto;
@@ -167,7 +162,7 @@ td {
 	z-index: -1;
 }
 .content_body .block {
-	width: 200px;
+	width: 220px;
 	background: #fff;
 	border-radius: 10px;
 	display: inline-block;
@@ -251,7 +246,13 @@ input, select {
 	background: #fff7005e;
 }
 .content_body .gm_img {
-	width: 90%;
+    border-radius: 50%;
+	width: 25%;
+    max-width: 124px;
+}
+.content_body .gm_img_large {
+    border-radius: 50%;
+    width: 100%;
 }
 .content_header.group_view h3 {
 	font-size: 20px;

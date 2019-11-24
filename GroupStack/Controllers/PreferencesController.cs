@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GroupStack.Data;
 using GroupStack.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GroupStack.Controllers
 {
+    [Authorize (Roles = "Administrator,Student")]
     public class PreferencesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,8 +29,18 @@ namespace GroupStack.Controllers
                 .Include(p => p.Student)
                 .Include(p => p.ProjectFirst)
                 .Include(p => p.ProjectSecond)
-                .Include(p => p.ProjectThird);
-            return View(await applicationDbContext.ToListAsync());
+                .Include(p => p.ProjectThird)
+                .OrderBy(p => p.Student.Email)
+                .OrderBy(p => p.Cohort.CohortName);
+
+            if (User.IsInRole(Constants.AdministratorRole))
+            {
+                return View(await applicationDbContext.ToListAsync());
+            }
+            else
+            {
+                return View(await applicationDbContext.Where(p => p.Student.Email == User.Identity.Name).ToListAsync());
+            }
         }
 
         // GET: Preferences/Details/5
@@ -54,12 +66,29 @@ namespace GroupStack.Controllers
             return View(preferences);
         }
 
-        // GET: Preferences/Create
-        public IActionResult Create()
+        // GET: Preferences/Create/5
+        public IActionResult Create(int? id)
         {
-            ViewData["CohortId"] = new SelectList(_context.Cohort, "CohortId", "CohortName");
-            ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Email");
-            ViewData["ProjectId"] = new SelectList(_context.Project, "ProjectId", "ProjectName");
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var cohort = _context.Cohort.FirstOrDefault(c => c.CohortId == id);
+            if (cohort == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["CohortId"] = new SelectList(_context.Cohort.Where(c => c.CohortId == id), "CohortId", "CohortName");
+            if (User.IsInRole(Constants.AdministratorRole))
+            {
+                ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Email");
+            }
+            else
+            {
+                ViewData["StudentId"] = new SelectList(_context.Users.Where(u => u.Email == User.Identity.Name), "Id", "Email");
+            }
+            ViewData["ProjectId"] = new SelectList(_context.Project.Where(p => p.CohortId == id), "ProjectId", "ProjectName");
             return View();
         }
 
@@ -70,24 +99,25 @@ namespace GroupStack.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("StudentId,CohortId,ProjectIdFirst,ProjectIdSecond,ProjectIdThird")] Preferences preferences)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid
+                && preferences.ProjectIdFirst != preferences.ProjectIdSecond
+                && preferences.ProjectIdFirst != preferences.ProjectIdThird
+                && preferences.ProjectIdSecond != preferences.ProjectIdThird)
             {
                 _context.Add(preferences);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Redirect("~/Cohorts/");
             }
             ViewData["CohortId"] = new SelectList(_context.Cohort, "CohortId", "CohortName", preferences.CohortId);
-            ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Id", preferences.StudentId);
-            ViewData["ProjectIdFirst"] = new SelectList(_context.Project, "ProjectId", "ProjectName", preferences.ProjectIdFirst);
-            ViewData["ProjectIdSecond"] = new SelectList(_context.Project, "ProjectId", "ProjectName", preferences.ProjectIdSecond);
-            ViewData["ProjectIdThird"] = new SelectList(_context.Project, "ProjectId", "ProjectName", preferences.ProjectIdThird);
+            ViewData["StudentId"] = new SelectList(_context.Users.Where(u => u.Id == preferences.StudentId), "Id", "Email", preferences.StudentId);
+            ViewData["ProjectId"] = new SelectList(_context.Project.Where(p => p.CohortId == preferences.CohortId), "ProjectId", "ProjectName");
             return View(preferences);
         }
 
         // GET: Preferences/Edit/5
-        public async Task<IActionResult> Edit(string id, int cohort)
+        public async Task<IActionResult> Edit(string id, int? cohort)
         {
-            if (id == null)
+            if (id == null || cohort == null)
             {
                 return NotFound();
             }
@@ -98,10 +128,10 @@ namespace GroupStack.Controllers
                 return NotFound();
             }
             ViewData["CohortId"] = new SelectList(_context.Cohort, "CohortId", "CohortName", preferences.CohortId);
-            ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Email", preferences.StudentId);
-            ViewData["ProjectIdFirst"] = new SelectList(_context.Project, "ProjectId", "ProjectName", preferences.ProjectIdFirst);
-            ViewData["ProjectIdSecond"] = new SelectList(_context.Project, "ProjectId", "ProjectName", preferences.ProjectIdSecond);
-            ViewData["ProjectIdThird"] = new SelectList(_context.Project, "ProjectId", "ProjectName", preferences.ProjectIdThird);
+            ViewData["StudentId"] = new SelectList(_context.Users.Where(u => u.Id == preferences.StudentId), "Id", "Email", preferences.StudentId);
+            ViewData["ProjectIdFirst"] = new SelectList(_context.Project.Where(p => p.CohortId == preferences.CohortId), "ProjectId", "ProjectName", preferences.ProjectIdFirst);
+            ViewData["ProjectIdSecond"] = new SelectList(_context.Project.Where(p => p.CohortId == preferences.CohortId), "ProjectId", "ProjectName", preferences.ProjectIdSecond);
+            ViewData["ProjectIdThird"] = new SelectList(_context.Project.Where(p => p.CohortId == preferences.CohortId), "ProjectId", "ProjectName", preferences.ProjectIdThird);
             return View(preferences);
         }
 
@@ -117,7 +147,10 @@ namespace GroupStack.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid
+                && preferences.ProjectIdFirst != preferences.ProjectIdSecond
+                && preferences.ProjectIdFirst != preferences.ProjectIdThird
+                && preferences.ProjectIdSecond != preferences.ProjectIdThird)
             {
                 try
                 {
@@ -137,11 +170,11 @@ namespace GroupStack.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CohortId"] = new SelectList(_context.Cohort, "CohortId", "CohortId", preferences.CohortId);
-            ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Id", preferences.StudentId);
-            ViewData["ProjectIdFirst"] = new SelectList(_context.Project, "ProjectId", "ProjectName", preferences.ProjectIdFirst);
-            ViewData["ProjectIdSecond"] = new SelectList(_context.Project, "ProjectId", "ProjectName", preferences.ProjectIdSecond);
-            ViewData["ProjectIdThird"] = new SelectList(_context.Project, "ProjectId", "ProjectName", preferences.ProjectIdThird);
+            ViewData["CohortId"] = new SelectList(_context.Cohort, "CohortId", "CohortName", preferences.CohortId);
+            ViewData["StudentId"] = new SelectList(_context.Users.Where(u => u.Id == preferences.StudentId), "Id", "Email", preferences.StudentId);
+            ViewData["ProjectIdFirst"] = new SelectList(_context.Project.Where(p => p.CohortId == preferences.CohortId), "ProjectId", "ProjectName", preferences.ProjectIdFirst);
+            ViewData["ProjectIdSecond"] = new SelectList(_context.Project.Where(p => p.CohortId == preferences.CohortId), "ProjectId", "ProjectName", preferences.ProjectIdSecond);
+            ViewData["ProjectIdThird"] = new SelectList(_context.Project.Where(p => p.CohortId == preferences.CohortId), "ProjectId", "ProjectName", preferences.ProjectIdThird);
             return View(preferences);
         }
 

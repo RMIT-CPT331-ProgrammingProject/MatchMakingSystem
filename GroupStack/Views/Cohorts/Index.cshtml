@@ -77,8 +77,14 @@
     </tbody>
 </table>
 }
-@foreach (var item in Model)
+@if (Model.Count() == 0)
 {
+    <p>Your email @User.Identity.Name has not been linked to any student cohorts.</p>
+}
+else
+{
+    foreach (var item in Model)
+    {
 <div class="block">
     <img src="~/img/rmit-logo.png" alt="University name logo" width="105" />
     <h4>
@@ -106,4 +112,5 @@
         }
     </p>
 </div>
+    }
 }

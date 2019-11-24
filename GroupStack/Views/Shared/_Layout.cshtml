@@ -47,12 +47,27 @@
                     <p>Dashboard</p>
                 </a>
             </div>
+@if (User.IsInRole(Constants.AdministratorRole))
+{
+            <div class="add_cohort">
+                <a href="~/UserManagement/">
+                    <img src="~/img/dashboard.png" alt="User management" />
+                    <p>Manage User Privileges</p>
+                </a>
+            </div>
+}
 @if (User.IsInRole(Constants.CoordinatorRole))
 {
             <div class="add_cohort">
                 <a href="~/Cohorts/Create/">
                     <img src="~/img/add_cohort.jpg" alt="Add cohort" /><br>
                     <p>Add Cohort</p>
+                </a>
+            </div>
+            <div class="add_cohort">
+                <a href="~/Whitelists/Create/">
+                    <img src="~/img/add_cohort.jpg" alt="Approve student or mentor" /><br>
+                    <p>Approve Student or Mentor</p>
                 </a>
             </div>
 }
@@ -65,12 +80,12 @@
                 </a>
             </div>
 }
-            <div class="settings">
+<!--            <div class="settings">
                 <a href="settings.html">
                     <img src="~/img/settings.png" alt="settings" />
                     <p>Settings</p>
                 </a>
-            </div>
+            </div>-->
         </nav>
     </header>
     <div class="container body">
@@ -78,13 +93,12 @@
         <main role="main" class="pb-3 content_body">
             @RenderBody()
         </main>
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2019 - GroupStack - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2019 - GroupStack - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

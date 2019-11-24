@@ -28,20 +28,21 @@ namespace GroupStack.Controllers
         // GET: Whitelists
         public async Task<IActionResult> Index()
         {
-            var whitelists = await _context.Whitelist.Include(w => w.Cohort)
+            var whitelist = await _context.Whitelist.Include(w => w.Cohort)
                     .OrderBy(w => w.UserId)
                     .OrderByDescending(w => w.IsMentor)
                     .OrderBy(w => w.CohortId)
                     .ToListAsync();
-            return View(whitelists);
+            return View(whitelist);
         }
 
         // GET: Whitelists
         [Route("Whitelists/Index/{cohortNo}")]
         public async Task<IActionResult> Index(int cohortNo)
         {
-            var applicationDbContext = _context.Whitelist.Include(w => w.Cohort).Where(x=>x.CohortId == cohortNo);
-            return View(await applicationDbContext.ToListAsync());
+            var whitelist = await _context.Whitelist.Include(w => w.Cohort).Where(x=>x.CohortId == cohortNo).ToListAsync();
+            ViewData["cohortName"] = (await _context.Cohort.FirstAsync(c => c.CohortId == cohortNo)).CohortName;
+            return View(whitelist);
         }
 
         // GET: Whitelists/Details/5
@@ -64,6 +65,7 @@ namespace GroupStack.Controllers
         }
 
         // GET: Whitelists/Create
+        // Administrator can add users to any cohort; Coordinators can add users to their own cohorts.
         public IActionResult Create()
         {
             if (User.IsInRole(Constants.AdministratorRole))
@@ -111,7 +113,7 @@ namespace GroupStack.Controllers
                     }
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = whitelist.CohortId });
             }
             ViewData["CohortId"] = new SelectList(_context.Cohort, "CohortId", "CohortName", whitelist.CohortId);
             return View(whitelist);
@@ -130,7 +132,16 @@ namespace GroupStack.Controllers
             {
                 return NotFound();
             }
-            ViewData["CohortId"] = new SelectList(_context.Cohort, "CohortId", "CohortName", whitelist.CohortId);
+
+            if (User.IsInRole(Constants.AdministratorRole))
+            {
+                ViewData["CohortId"] = new SelectList(_context.Cohort, "CohortId", "CohortName", whitelist.CohortId);
+            }
+            else
+            {
+                ViewData["CohortId"] = new SelectList(_context.Cohort.Where(c => c.CoordinatorId == User.Identity.Name), "CohortId", "CohortName", whitelist.CohortId);
+            }
+
             return View(whitelist);
         }
 
@@ -164,7 +175,7 @@ namespace GroupStack.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = whitelist.CohortId });
             }
             ViewData["CohortId"] = new SelectList(_context.Cohort, "CohortId", "CohortName", whitelist.CohortId);
             return View(whitelist);

@@ -10,23 +10,30 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+@{
+    var parameters = new Dictionary<string, string>
+    {
+        { "id", Model.StudentId },
+        { "cohort", Model.CohortId.ToString() }
+    };
+}
+        <form asp-action="Edit" asp-all-route-data="parameters">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="StudentId" />
             <input type="hidden" asp-for="CohortId" />
             <div class="form-group">
                 <label asp-for="ProjectIdFirst" class="control-label"></label>
-                <input asp-for="ProjectIdFirst" class="form-control" />
+                <select asp-for="ProjectIdFirst" class="form-control" asp-items="ViewBag.ProjectIdFirst"></select>
                 <span asp-validation-for="ProjectIdFirst" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ProjectIdSecond" class="control-label"></label>
-                <input asp-for="ProjectIdSecond" class="form-control" />
+                <select asp-for="ProjectIdSecond" class="form-control" asp-items="ViewBag.ProjectIdSecond"></select>
                 <span asp-validation-for="ProjectIdSecond" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ProjectIdThird" class="control-label"></label>
-                <input asp-for="ProjectIdThird" class="form-control" />
+                <select asp-for="ProjectIdThird" class="form-control" asp-items="ViewBag.ProjectIdThird"></select>
                 <span asp-validation-for="ProjectIdThird" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -34,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.Role)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Group.GroupId)
+                @Html.DisplayFor(modelItem => item.Group.GroupName)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { group=item.GroupId, student=item.StudentId }) |

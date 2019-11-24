@@ -1,15 +1,21 @@
-﻿@{
+﻿@using GroupStack.Data
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
     <div class="text-center">
         <h1 class="display-4">GroupStack</h1>
         <h4>What is GroupStack?</h4>
-        <p>Foo</p>
-        <h4>Who is GroupStack for?</h4>
-        <p>Bar</p>
+        <p>GroupStack is a web-based app designed to allow schools and universities to automatically sort students into groups for projects according to their selected preferences.</p>
+        <h4>How to use GroupStack?</h4>
+        <p>Course Coordinators may create student cohorts, associate students and mentors with those cohorts and automatically assign students to project groups.</p>
+        <p>Mentors may create project options for the students within a cohort.</p>
+        <p>Students may select their project preferences.</p>
 
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@if (User.IsInRole(Constants.AdministratorRole))
+{
+        <h4>Shortcut links for testing.</h4>
         <p><a href="~/UserManagement/">Shortcut to user management</a></p>
 
         <p><a href="~/Cohorts/">Shortcut to cohorts</a></p>
@@ -20,4 +26,5 @@
 
         <p><a href="~/Groups/">Shortcut to groups</a></p>
         <p><a href="~/GroupAssignments/">Shortcut to group assignments</a></p>
+}
     </div>

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<GroupStack.Models.Preferences>
+﻿@using GroupStack.Data
+@model IEnumerable<GroupStack.Models.Preferences>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,12 +7,15 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cohort)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProjectIdFirst)
             </th>
@@ -21,18 +25,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.ProjectIdThird)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Student)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cohort)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cohort.CohortName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Student.Email)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProjectFirst.ProjectName)
             </td>
@@ -43,15 +47,9 @@
                 @Html.DisplayFor(modelItem => item.ProjectThird.ProjectName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Student.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cohort.CohortName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.StudentId, cohort=item.CohortId }) |
-                @Html.ActionLink("Details", "Details", new { id=item.StudentId, cohort=item.CohortId }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.StudentId, cohort=item.CohortId })
+                @Html.ActionLink("Edit", "Edit", new { id = item.StudentId, cohort = item.CohortId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.StudentId, cohort = item.CohortId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.StudentId, cohort = item.CohortId })
             </td>
         </tr>
 }
